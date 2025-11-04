@@ -1,71 +1,51 @@
 blueprint:
-  name: IKEA E2001/E2002 (MQTT) - Light Control + Extra Actions
-  description: |
-    Gebruik de IKEA E2001/E2002 afstandsbediening (Zigbee2MQTT via MQTT).
-    - UP  (on)  → schakelt geselecteerd licht AAN
-    - DOWN (off) → schakelt geselecteerd licht UIT
-    - LEFT  (arrow_left_click)  → vrije actie
-    - RIGHT (arrow_right_click) → vrije actie
-
+  name: IKEA E2001/E2002 - STYRBAR remote control
+  description: Use the IKEA E2001/E2002 remote control
   domain: automation
-
   input:
     remote:
-      name: IKEA Remote
-      description: Select the IKEA E2001/E2002 remote
+      name: Remote
+      description: Select the remote
       selector:
         device:
           multiple: false
-
     target_light:
-      name: Licht
-      description: Selecteer het licht dat Up/Down moet bedienen
+      name: Light
+      description: Select the light the should be turned on/off
       selector:
         entity:
           domain: light
-
-    button_left:
-      name: Actie voor LEFT (arrow_left_click)
+    button_right:
+      name: Actie voor up
       default: []
       selector:
         action: {}
-
-    button_right:
-      name: Actie voor RIGHT (arrow_right_click)
+    button_left:
+      name: Action for down
       default: []
       selector:
         action: {}
 
 mode: restart
 max_exceeded: silent
-
 trigger:
   - platform: mqtt
     topic: zigbee2mqtt/+/action
-
 action:
   - variables:
       action: "{{ trigger.payload }}"
-
   - choose:
-      # UP button → on → turn light ON
       - conditions: "{{ action == 'on' }}"
         sequence:
           - service: light.turn_on
             target:
               entity_id: !input target_light
-
-      # DOWN button → off → turn light OFF
       - conditions: "{{ action == 'off' }}"
         sequence:
           - service: light.turn_off
             target:
               entity_id: !input target_light
-
-      # LEFT button → custom action
       - conditions: "{{ action == 'arrow_left_click' }}"
         sequence: !input button_left
-
-      # RIGHT button → custom action
       - conditions: "{{ action == 'arrow_right_click' }}"
         sequence: !input button_right
