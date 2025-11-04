@@ -52,54 +52,8 @@ action:
             target:
               entity_id: !input target_light
 
-      # UP hold -> start increasing brightness smoothly
-      - conditions: "{{ action == 'brightness_move_up' }}"
-        sequence:
-          - service: light.turn_on
-            target:
-              entity_id: !input target_light
-          - repeat:
-              while:
-                - condition: template
-                  value_template: "{{ not is_state(trigger.entity_id, 'brightness_stop') }}"
-              sequence:
-                - service: light.turn_on
-                  target:
-                    entity_id: !input target_light
-                  data:
-                    brightness_step_pct: "{{ brightness_step }}"
-                - delay:
-                    seconds: "{{ loop_interval }}"
-
-      # DOWN hold -> start decreasing brightness smoothly
-      - conditions: "{{ action == 'brightness_move_down' }}"
-        sequence:
-          - service: light.turn_on
-            target:
-              entity_id: !input target_light
-          - repeat:
-              while:
-                - condition: template
-                  value_template: "{{ not is_state(trigger.entity_id, 'brightness_stop') }}"
-              sequence:
-                - service: light.turn_on
-                  target:
-                    entity_id: !input target_light
-                  data:
-                    brightness_step_pct: "-{{ brightness_step }}"
-                - delay:
-                    seconds: "{{ loop_interval }}"
-
-      # RELEASE -> stop dimming
-      - conditions: "{{ action == 'brightness_stop' }}"
-        sequence:
-          - service: homeassistant.update_entity
-            target:
-              entity_id: !input target_light
-
       - conditions: "{{ action == 'arrow_left_click' }}"
         sequence: !input button_left
 
       - conditions: "{{ action == 'arrow_right_click' }}"
         sequence: !input button_right
-        
