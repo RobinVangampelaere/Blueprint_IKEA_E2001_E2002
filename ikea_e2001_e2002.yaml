@@ -40,12 +40,42 @@ action:
           - service: light.turn_on
             target:
               entity_id: !input target_light
+
       - conditions: "{{ action == 'off' }}"
         sequence:
           - service: light.turn_off
             target:
               entity_id: !input target_light
+
+      - conditions: "{{ action == 'brightness_move_up' }}"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input target_light
+            data:
+              brightness_step_pct: 100
+              transition: 30
+
+      - conditions: "{{ action == 'brightness_move_down' }}"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input target_light
+            data:
+              brightness_step_pct: -100
+              transition: 30
+
+      - conditions: "{{ action == 'brightness_stop' }}"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input target_light
+            data:
+              transition: 0
+
       - conditions: "{{ action == 'arrow_left_click' }}"
         sequence: !input button_left
+
       - conditions: "{{ action == 'arrow_right_click' }}"
         sequence: !input button_right
+        
