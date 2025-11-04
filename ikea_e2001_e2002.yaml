@@ -12,12 +12,10 @@ blueprint:
   input:
     remote:
       name: IKEA Remote
-      description: Selecteer de IKEA E2001/E2002 remote (Zigbee2MQTT device)
+      description: Select the IKEA E2001/E2002 remote
       selector:
         device:
-          integration: mqtt
-          manufacturer: IKEA of Sweden
-          model: TRADFRI remote control
+          multiple: false
 
     target_light:
       name: Licht
