@@ -31,10 +31,6 @@ max_exceeded: silent
 trigger:
   - platform: mqtt
     topic: zigbee2mqtt/+/action
-variables:
-  brightness_step: 5       # % per loop iteration
-  loop_interval: 0.15      # seconds (150ms)
-  dimming_active: false
 
 action:
   - variables:
