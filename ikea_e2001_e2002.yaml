@@ -30,26 +30,8 @@ mode: restart
 max_exceeded: silent
 
 trigger:
-  - platform: device
-    device_id: !input remote
-    domain: mqtt
-    type: action
-    subtype: "on"
-  - platform: device
-    device_id: !input remote
-    domain: mqtt
-    type: action
-    subtype: "off"
-  - platform: device
-    device_id: !input remote
-    domain: mqtt
-    type: action
-    subtype: "arrow_left_click"
-  - platform: device
-    device_id: !input remote
-    domain: mqtt
-    type: action
-    subtype: "arrow_right_click"
+  - platform: mqtt
+    topic: zigbee2mqtt/{{ remote }}/action
 
 action:
   - variables:
