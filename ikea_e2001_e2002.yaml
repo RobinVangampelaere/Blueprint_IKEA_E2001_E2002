@@ -8,7 +8,6 @@ blueprint:
       description: Select your IKEA remote device
       selector:
         device:
-          integration: mqtt
           multiple: false
     target_light:
       name: Light
