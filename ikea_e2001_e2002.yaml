@@ -1,39 +1,36 @@
 blueprint:
   name: IKEA E2001/E2002 - STYRBAR remote control
-  description: Use the IKEA E2001/E2002 remote control via Zigbee2MQTT
+  description: Use the IKEA E2001/E2002 remote control
   domain: automation
   input:
     remote:
       name: Remote
-      description: Select your IKEA remote device
+      description: Select the remote
       selector:
         device:
           multiple: false
     target_light:
       name: Light
-      description: Select the light to control
+      description: Select the light the should be turned on/off
       selector:
         entity:
           domain: light
     button_right:
-      name: Action for right button (up)
+      name: Actie voor up
       default: []
       selector:
         action: {}
     button_left:
-      name: Action for left button (down)
+      name: Action for down
       default: []
       selector:
         action: {}
 
 mode: restart
 max_exceeded: silent
-
 trigger:
-  - platform: device
-    device_id: !input remote
-    domain: mqtt
-    type: action
+  - platform: mqtt
+    topic: zigbee2mqtt/+/action
 
 action:
   - variables:
