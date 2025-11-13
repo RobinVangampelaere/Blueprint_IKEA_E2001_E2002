@@ -16,7 +16,7 @@ blueprint:
         entity:
           domain: light
     button_right:
-      name: Actie fot up
+      name: Action for up
       default: []
       selector:
         action: {}
