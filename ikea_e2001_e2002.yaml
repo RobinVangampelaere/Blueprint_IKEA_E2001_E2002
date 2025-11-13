@@ -31,25 +31,25 @@ max_exceeded: silent
 
 trigger:
   - platform: device
-    device_id: !input mqtt_device
+    device_id: !input remote
     domain: mqtt
     type: action
     subtype: "on"
     id: light_on
   - platform: device
-    device_id: !input mqtt_device
+    device_id: !input remote
     domain: mqtt
     type: action
     subtype: "off"
     id: light_off
   - platform: device
-    device_id: !input mqtt_device
+    device_id: !input remote
     domain: mqtt
     type: action
     subtype: arrow_left_click
     id: arrow_left_click
   - platform: device
-    device_id: !input mqtt_device
+    device_id: !input remote
     domain: mqtt
     type: action
     subtype: arrow_right_click
@@ -65,7 +65,7 @@ action:
         sequence:
           - service: light.turn_on
             target:
-              entity_id: !input light_entity
+              entity_id: !input target_light
 
       - conditions:
           - condition: trigger
@@ -73,7 +73,7 @@ action:
         sequence:
           - service: light.turn_off
             target:
-              entity_id: !input light_entity
+              entity_id: !input target_light
 
       - conditions: "{{ action == 'arrow_left_click' }}"
         sequence: !input button_left
