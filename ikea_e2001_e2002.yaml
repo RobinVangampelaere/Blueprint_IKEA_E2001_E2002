@@ -1,14 +1,16 @@
 blueprint:
   name: IKEA E2001/E2002 - STYRBAR remote control
-  description: Use the IKEA E2001/E2002 remote control via Zigbee2MQTT (entity-based)
+  description: Use the IKEA E2001/E2002 remote control via Zigbee2MQTT
   domain: automation
   input:
-    remote_action_sensor:
-      name: Remote Action Sensor
-      description: Select the Zigbee2MQTT action sensor for your remote (e.g. sensor.ikea_remote_action)
+    remote:
+      name: Remote
+      description: Select your IKEA remote device
       selector:
-        entity:
-          domain: sensor
+        device:
+          integration: mqtt
+          manufacturer: IKEA of Sweden
+          multiple: false
     target_light:
       name: Light
       description: Select the light to control
@@ -30,12 +32,14 @@ mode: restart
 max_exceeded: silent
 
 trigger:
-  - platform: state
-    entity_id: !input remote_action_sensor
+  - platform: device
+    device_id: !input remote
+    domain: mqtt
+    type: action
 
 action:
   - variables:
-      action: "{{ trigger.to_state.state }}"
+      action: "{{ trigger.payload }}"
   - choose:
       - conditions: "{{ action == 'on' }}"
         sequence:
